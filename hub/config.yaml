@@ -1,0 +1,25 @@
+singleuser:
+  serviceAccountName: jovyan
+  defaultUrl: "/lab"
+  cpu:
+    limit: 2
+    guarantee: 1
+  memory:
+    limit: 8G
+    guarantee: 7G
+  image:
+    name: pangeo/pangeo-notebook
+    tag: latest
+
+hub:
+  config:
+    JupyterHub:
+      authenticator_class: github
+
+proxy:
+  https:
+    enabled: true
+    hosts:
+      - snowex.hackweek.io
+    letsencrypt:
+      contactEmail: scottyh@uw.edu

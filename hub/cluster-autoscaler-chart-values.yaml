@@ -1,0 +1,22 @@
+# docs https://github.com/terraform-aws-modules/terraform-aws-eks/blob/master/docs/autoscaling.md
+cloudProvider: aws
+awsRegion: us-west-2
+
+
+image:
+  repository: k8s.gcr.io/autoscaling/cluster-autoscaler
+  # This should match the version of k8s you're running (1.19)
+  tag: v1.19.1
+
+rbac:
+  create: true
+  serviceAccount:
+    # This value should match local.k8s_service_account_name in locals.tf
+    name: cluster-autoscaler-aws-cluster-autoscaler-chart
+    annotations:
+      # This value should match the ARN of the role created by module.iam_assumable_role_admin in irsa.tf
+      eks.amazonaws.com/role-arn: "arn:aws:iam::783380859522:role/cluster-autoscaler"
+
+autoDiscovery:
+  clusterName: snowex-hackweek
+  enabled: true
