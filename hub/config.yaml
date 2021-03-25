@@ -8,13 +8,18 @@ singleuser:
     limit: 8G
     guarantee: 7G
   image:
-    name: pangeo/pangeo-notebook
+    name: uwhackweek/snowex
     tag: latest
 
 hub:
   config:
     JupyterHub:
       authenticator_class: github
+    Authenticator:
+      auto_login: true
+      admin_users:
+        - scottyhq
+        - lsetiawan
 
 proxy:
   https:
