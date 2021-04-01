@@ -5,6 +5,11 @@ resource "aws_instance" "postgres" {
   key_name               = "${var.hackweek_name}-postgres"
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.postgres.id]
+    
+  tags = {
+    Name        = "Postgres machine for ${var.hackweek_name} hackweek"
+    Hackweek    = ${var.hackweek_name}
+  }
 
   root_block_device {
     volume_size           = 100
