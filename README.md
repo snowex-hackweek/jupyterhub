@@ -1,5 +1,5 @@
-[![Terraform](https://github.com/uwhackweek/jupyterhub-deploy/actions/workflows/Terraform.yml/badge.svg)](https://github.com/uwhackweek/jupyterhub-deploy/actions/workflows/Terraform.yml)
-[![Helm](https://github.com/uwhackweek/jupyterhub-deploy/actions/workflows/Helm.yml/badge.svg)](https://github.com/uwhackweek/jupyterhub-deploy/actions/workflows/Helm.yml)
+[![Terraform](https://github.com/snowex-hackweek/jupyterhub/actions/workflows/Terraform.yml/badge.svg)](https://github.com/snowex-hackweek/jupyterhub/actions/workflows/Terraform.yml)
+[![Helm](https://github.com/snowex-hackweek/jupyterhub/actions/workflows/Helm.yml/badge.svg)](https://github.com/snowex-hackweek/jupyterhub/actions/workflows/Helm.yml)
 
 # JupyterHub for SnowEx Hackweek 2021
 https://snowex.hackweek.io
