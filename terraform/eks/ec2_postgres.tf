@@ -5,7 +5,6 @@ resource "aws_instance" "postgres" {
   key_name               = "${var.hackweek_name}-postgres"
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.postgres.id]
-  user_data              = file("mount_volume.sh")
 
   root_block_device {
     volume_size           = 100
