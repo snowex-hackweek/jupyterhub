@@ -8,7 +8,7 @@ resource "aws_instance" "postgres" {
     
   tags = {
     Name        = "Postgres machine for ${var.hackweek_name} hackweek"
-    Hackweek    = ${var.hackweek_name}
+    Hackweek    = "${var.hackweek_name}"
   }
 
   root_block_device {
