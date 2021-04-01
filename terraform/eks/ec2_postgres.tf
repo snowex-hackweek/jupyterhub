@@ -7,8 +7,7 @@ resource "aws_instance" "postgres" {
   vpc_security_group_ids = [aws_security_group.postgres.id]
   user_data              = file("mount_volume.sh")
 
-  ebs_block_device {
-    device_name           = "/dev/sdf"
+  root_block_device {
     volume_size           = 100
     volume_type           = "gp2"
     delete_on_termination = false
