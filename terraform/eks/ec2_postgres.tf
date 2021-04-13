@@ -27,8 +27,7 @@ resource "aws_security_group" "postgres" {
     from_port = 5432
     to_port   = 5432
     protocol  = "tcp"
-    # Don't leave fully open for long periods of time?
-    cidr_blocks = [module.vpc.vpc_cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
   ingress {
     from_port = 22
