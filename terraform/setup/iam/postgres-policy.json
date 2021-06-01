@@ -1,0 +1,20 @@
+{
+	"Version": "2012-10-17",
+	"Statement": [{
+		"Sid": "ModifyVolume",
+		"Effect": "Allow",
+		"Action": [
+			"ec2:AttachVolume",
+			"ec2:CreateVolume",
+			"ec2:DescribeVolumeAttribute",
+			"ec2:DescribeVolumeStatus",
+			"ec2:DescribeVolumes",
+			"ec2:DetachVolume",
+			"ec2:EnableVolumeIO",
+			"ec2:ModifyVolumeAttribute",
+			"ec2:ModifyVolume",
+			"ec2:Modify*"
+		],
+		"Resource": "*"
+	}]
+}
