@@ -12,7 +12,7 @@ resource "aws_instance" "postgres" {
   }
 
   root_block_device {
-    volume_size           = 100
+    volume_size           = 200
     volume_type           = "gp2"
     delete_on_termination = false
   }
