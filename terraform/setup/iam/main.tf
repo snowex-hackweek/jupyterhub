@@ -161,3 +161,15 @@ resource "aws_iam_role_policy_attachment" "github-role-sops" {
   role = aws_iam_role.github-role.name
   policy_arn = aws_iam_policy.github-role-sops.arn
 }
+
+
+# Permissions for modifying postgres volume
+resource "aws_iam_policy" "github-role-postgres" {
+  name = "github-actions-role-postgres"
+  policy = file("postgres-policy.json")
+}
+
+resource "aws_iam_role_policy_attachment" "github-role-postgres" {
+  role = aws_iam_role.github-role.name
+  policy_arn = aws_iam_policy.github-role-postgres.arn
+}
