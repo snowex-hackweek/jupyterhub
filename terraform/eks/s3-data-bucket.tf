@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "hackweek-bucket-access-permissions" {
     ]
 
     resources = [
-      "arn:aws:s3:::eis-dh-hydro/*"
+      "arn:aws:s3:::eis-dh-hydro/SNOWEX-HACKWEEK/*"
     ]
   }
 
