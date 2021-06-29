@@ -36,7 +36,22 @@ data "aws_iam_policy_document" "hackweek-bucket-access-permissions" {
     ]
 
     resources = [
-      aws_s3_bucket.hackweek-data-bucket.arn
+      aws_s3_bucket.hackweek-data-bucket.arn,
+      "arn:aws:s3:::eis-dh-hydro"
+    ]
+  }
+  
+  statement {
+    sid       = "${var.hackweek_name}DataBucketReadOnly"
+
+    effect    = "Allow"
+
+    actions   = [
+      "s3:GetObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::eis-dh-hydro"
     ]
   }
 
