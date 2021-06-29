@@ -71,18 +71,3 @@ data "aws_iam_policy_document" "hackweek-bucket-access-permissions" {
     ]
   }
 }
-
-# Also create an IAM user so that we can create temporary credentials to access
-# S3 from anywhere with aws sts get-session-token
-resource "aws_iam_user" "snowex-user" {
-  name = "snowex-user"
-}
-
-resource "aws_iam_access_key" "snowex-user" {
-  user = aws_iam_user.snowex-user.name
-}
-
-resource "aws_iam_user_policy_attachment" "snowex-user" {
-  user       = aws_iam_user.snowex-user.name
-  policy_arn = aws_iam_policy.hackweek-bucket-access-policy.arn
-}
