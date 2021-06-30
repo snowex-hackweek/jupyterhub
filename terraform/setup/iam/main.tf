@@ -25,6 +25,10 @@ data "aws_s3_bucket" "snowex" {
   bucket = "terraform-hackweek-snowex"
 }
 
+data "aws_iam_role" "jovyan-sa" {
+  name = "jovyan-serviceaccount"
+}
+
 # To add tags
 #data "aws_caller_identity" "current" {}
 
@@ -36,6 +40,9 @@ resource "aws_iam_access_key" "github-actor" {
   user = aws_iam_user.github-actor.name
 }
 
+# NOTE: added jovyan-service account ARN after creating cluster
+# also manually modified 'Trust Relationship' for jovyan-service account as described here
+# https://github.com/aws-actions/configure-aws-credentials#permissions-for-assuming-a-role
 resource "aws_iam_policy" "github-actor" {
   name        = "github-actions-user-policy"
   description = "Allow github actions user to assume role"
@@ -48,7 +55,10 @@ resource "aws_iam_policy" "github-actor" {
                 "sts:AssumeRole",
                 "sts:TagSession"
             ],
-            "Resource": "${aws_iam_role.github-role.arn}",
+            "Resource": [
+              "${aws_iam_role.github-role.arn}",
+              "${data.aws_iam_role.jovyan-sa.arn}"
+            ],
             "Effect": "Allow"
         }
     ]
