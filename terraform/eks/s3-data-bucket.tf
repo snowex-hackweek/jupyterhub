@@ -36,7 +36,22 @@ data "aws_iam_policy_document" "hackweek-bucket-access-permissions" {
     ]
 
     resources = [
-      aws_s3_bucket.hackweek-data-bucket.arn
+      aws_s3_bucket.hackweek-data-bucket.arn,
+      "arn:aws:s3:::eis-dh-hydro"
+    ]
+  }
+  
+  statement {
+    sid       = "${var.hackweek_name}DataBucketReadOnly"
+
+    effect    = "Allow"
+
+    actions   = [
+      "s3:GetObject"
+    ]
+
+    resources = [
+      "arn:aws:s3:::eis-dh-hydro/SNOWEX-HACKWEEK/*"
     ]
   }
 
@@ -55,19 +70,4 @@ data "aws_iam_policy_document" "hackweek-bucket-access-permissions" {
       "${aws_s3_bucket.hackweek-data-bucket.arn}/*"
     ]
   }
-}
-
-# Also create an IAM user so that we can create temporary credentials to access
-# S3 from anywhere with aws sts get-session-token
-resource "aws_iam_user" "snowex-user" {
-  name = "snowex-user"
-}
-
-resource "aws_iam_access_key" "snowex-user" {
-  user = aws_iam_user.snowex-user.name
-}
-
-resource "aws_iam_user_policy_attachment" "snowex-user" {
-  user       = aws_iam_user.snowex-user.name
-  policy_arn = aws_iam_policy.hackweek-bucket-access-policy.arn
 }
