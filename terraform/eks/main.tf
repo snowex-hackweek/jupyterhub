@@ -51,7 +51,7 @@ module "vpc" {
   azs                  = data.aws_availability_zones.available.names
 
   public_subnets       = ["172.16.0.0/19", "172.16.32.0/19", "172.16.64.0/19"]
-  private_subnets      = ["172.16.96.0/19", "172.16.128.0/19", "172.16.160.0/19"]
+  private_subnets      = ["172.16.4.0/24", "172.16.96.0/19", "172.16.128.0/19", "172.16.160.0/19"]
   enable_dns_hostnames = true
   enable_dns_support   = true
   enable_nat_gateway   = true
