@@ -11,6 +11,11 @@ resource "aws_instance" "postgres" {
     Hackweek    = var.hackweek_name
   }
 
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = all
+  }
+
   root_block_device {
     volume_size           = 200
     volume_type           = "gp2"

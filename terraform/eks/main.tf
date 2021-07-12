@@ -18,12 +18,22 @@ terraform {
   }
 }
 
+# provider "kubernetes" {
+#  host                   = data.aws_eks_cluster.cluster.endpoint
+#  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+#  token                  = data.aws_eks_cluster_auth.cluster.token
+#  load_config_file       = false
+#}
+
+# In case of not creating the cluster, this will be an incompletely configured, unused provider, which poses no problem.
 provider "kubernetes" {
-  host                   = data.aws_eks_cluster.cluster.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
+  host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint, [""]), 0)
+  cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data, [""]), 0))
+  token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token, [""]), 0)
   load_config_file       = false
+#  version                = "1.10"
 }
+
 
 provider "aws" {
   region      = var.region
@@ -32,10 +42,12 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 data "aws_eks_cluster" "cluster" {
+  count = var.create_eks ? 1 : 0
   name = module.eks.cluster_id
 }
 
 data "aws_eks_cluster_auth" "cluster" {
+  count = var.create_eks ? 1 : 0
   name = module.eks.cluster_id
 }
 
@@ -50,8 +62,8 @@ module "vpc" {
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
 
-  public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
-  private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
+  public_subnets       = ["172.16.0.0/19", "172.16.32.0/19", "172.16.64.0/19"]
+  private_subnets      = ["172.16.96.0/19", "172.16.128.0/19", "172.16.160.0/19"]
   enable_dns_hostnames = true
   enable_dns_support   = true
   enable_nat_gateway   = true
@@ -69,6 +81,7 @@ module "vpc" {
 }
 
 module "eks" {
+  create_eks = false
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = local.cluster_name
   cluster_version = "1.19"
@@ -94,13 +107,13 @@ module "eks" {
       kubelet_extra_args      = "--node-labels=node.kubernetes.io/lifecycle=spot,hub.jupyter.org/node-purpose=core"
     },
     {
-      name                    = "user-spot"
+      name                    = "user-spot0"
       override_instance_types = ["m5.2xlarge", "m4.2xlarge", "m5a.2xlarge"]
       root_volume_type        = "gp3"
-      spot_instance_pools     = 3
+      # spot_instance_pools     = 3
       asg_max_size            = 40
       asg_min_size            = 10
-      asg_desired_capacity    = 10
+      asg_desired_capacity    = 20
       public_ip               = false
       subnets                 = [module.vpc.private_subnets[0]]
 
