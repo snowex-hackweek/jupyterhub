@@ -16,6 +16,11 @@ resource "aws_instance" "postgres" {
     volume_type           = "gp2"
     delete_on_termination = false
   }
+    
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes = all
+  }
 
 }
 
