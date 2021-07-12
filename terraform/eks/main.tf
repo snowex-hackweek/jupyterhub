@@ -98,7 +98,7 @@ module "eks" {
       override_instance_types = ["m5.2xlarge", "m4.2xlarge", "m5a.2xlarge"]
       root_volume_type        = "gp3"
       spot_instance_pools     = 3
-      asg_max_size            = 20
+      asg_max_size            = 40
       asg_min_size            = 0
       asg_desired_capacity    = 0
       public_ip               = false
