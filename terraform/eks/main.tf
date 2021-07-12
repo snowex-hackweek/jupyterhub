@@ -50,8 +50,8 @@ module "vpc" {
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
 
-  public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
-  private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
+  public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24", "172.16.64.0/19"]
+  private_subnets      = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24", "172.16.96.0/19"]
   enable_dns_hostnames = true
   enable_dns_support   = true
   enable_nat_gateway   = true
@@ -88,7 +88,7 @@ module "eks" {
       override_instance_types = ["t3.large", "t3a.large"]
       spot_instance_pools     = 2
       public_ip               = false
-      subnets                 = [module.vpc.private_subnets[0]]
+      subnets                 = [module.vpc.private_subnets[3]]
 
       # Use this to set labels / taints
       kubelet_extra_args      = "--node-labels=node.kubernetes.io/lifecycle=spot,hub.jupyter.org/node-purpose=core"
@@ -102,7 +102,7 @@ module "eks" {
       asg_min_size            = 10
       asg_desired_capacity    = 10
       public_ip               = false
-      subnets                 = [module.vpc.private_subnets[0]]
+      subnets                 = [module.vpc.private_subnets[3]]
 
 
       # Use this to set labels / taints
