@@ -99,8 +99,8 @@ module "eks" {
       root_volume_type        = "gp3"
       spot_instance_pools     = 3
       asg_max_size            = 40
-      asg_min_size            = 0
-      asg_desired_capacity    = 0
+      asg_min_size            = 10
+      asg_desired_capacity    = 10
       public_ip               = false
       subnets                 = [module.vpc.private_subnets[0]]
 
