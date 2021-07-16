@@ -5,3 +5,7 @@ variable "region" {
 variable "hackweek_name" {
   default = "snowex"
 }
+
+variable "create_eks" {
+  default = true
+}

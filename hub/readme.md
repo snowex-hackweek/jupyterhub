@@ -46,6 +46,10 @@ helm upgrade --cleanup-on-fail \
 Note this will install JupyerHub Helm Chart Version 0.11.1 (https://github.com/jupyterhub/helm-chart#release-notes).
 
 
+### Install cluster autoscaler 
+```
+ helm install cluster-autoscaler --namespace kube-system autoscaler/cluster-autoscaler --values hub/cluster-autoscaler-chart-values.yaml  
+```
 
 
 ### Configuration changes
