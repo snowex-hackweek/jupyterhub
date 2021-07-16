@@ -7,5 +7,5 @@ variable "hackweek_name" {
 }
 
 variable "create_eks" {
-  default = false
+  default = true
 }

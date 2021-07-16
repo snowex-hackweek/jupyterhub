@@ -18,21 +18,21 @@ terraform {
   }
 }
 
-# provider "kubernetes" {
-#  host                   = data.aws_eks_cluster.cluster.endpoint
-#  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
-#  token                  = data.aws_eks_cluster_auth.cluster.token
-#  load_config_file       = false
-#}
+provider "kubernetes" {
+ host                   = data.aws_eks_cluster.cluster.endpoint
+ cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
+ token                  = data.aws_eks_cluster_auth.cluster.token
+ load_config_file       = false
+}
 
 # In case of not creating the cluster, this will be an incompletely configured, unused provider, which poses no problem.
-provider "kubernetes" {
-  host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint, [""]), 0)
-  cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data, [""]), 0))
-  token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token, [""]), 0)
-  load_config_file       = false
-#  version                = "1.10"
-}
+# provider "kubernetes" {
+#   host                   = element(concat(data.aws_eks_cluster.cluster[*].endpoint, [""]), 0)
+#   cluster_ca_certificate = base64decode(element(concat(data.aws_eks_cluster.cluster[*].certificate_authority.0.data, [""]), 0))
+#   token                  = element(concat(data.aws_eks_cluster_auth.cluster[*].token, [""]), 0)
+#   load_config_file       = false
+# #  version                = "1.10"
+# }
 
 
 provider "aws" {
@@ -42,12 +42,12 @@ provider "aws" {
 data "aws_caller_identity" "current" {}
 
 data "aws_eks_cluster" "cluster" {
-  count = var.create_eks ? 1 : 0
+  # count = var.create_eks ? 1 : 0
   name = module.eks.cluster_id
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  count = var.create_eks ? 1 : 0
+  # count = var.create_eks ? 1 : 0
   name = module.eks.cluster_id
 }
 
@@ -62,7 +62,7 @@ module "vpc" {
   cidr                 = "172.16.0.0/16"
   azs                  = data.aws_availability_zones.available.names
 
-  public_subnets       = ["172.16.0.0/19", "172.16.32.0/19", "172.16.64.0/19"]
+  public_subnets       = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
   private_subnets      = ["172.16.96.0/19", "172.16.128.0/19", "172.16.160.0/19"]
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -81,7 +81,7 @@ module "vpc" {
 }
 
 module "eks" {
-  create_eks = false
+  # create_eks = var.create_eks
   source          = "terraform-aws-modules/eks/aws"
   cluster_name    = local.cluster_name
   cluster_version = "1.19"
@@ -112,8 +112,8 @@ module "eks" {
       root_volume_type        = "gp3"
       # spot_instance_pools     = 3
       asg_max_size            = 40
-      asg_min_size            = 10
-      asg_desired_capacity    = 20
+      asg_min_size            = 0
+      asg_desired_capacity    = 0
       public_ip               = false
       subnets                 = [module.vpc.private_subnets[0]]
 
